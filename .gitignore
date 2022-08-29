@@ -1,0 +1,10 @@
+# Virtual Environment
+venv/
+
+# Flask
+instance/*
+!instance/.gitignore
+
+# Flask.Python Stack
+
+__pycache__/
