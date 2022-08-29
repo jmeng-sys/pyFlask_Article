@@ -39,7 +39,7 @@ function App() {
   }
 
   useEffect(() => {
-    fetch('http://us-cdbr-east-06.cleardb.net:5000/get', {
+    fetch('/get', {
       'method':'GET',
       headers: {
         'Content-Type':'application/json'

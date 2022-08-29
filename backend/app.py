@@ -1,10 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 from flask_marshmallow import Marshmallow
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='frontend/build', static_url_path='')
 CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://b311eefdbfe0ce:3e8fd0eb@us-cdbr-east-06.cleardb.net/heroku_96a386148a4caf8'
@@ -35,6 +35,7 @@ articles_schema = ArticleSchema(many=True)
 
 
 @app.route('/get', methods=['GET'])
+@cross_origin()
 def get_articles():
     all_articles = Articles.query.all()
     results = articles_schema.dump(all_articles)
@@ -42,12 +43,14 @@ def get_articles():
 
 
 @app.route('/get/<id>/', methods=['GET'])
+@cross_origin()
 def get_details(id):
     article = Articles.query.get(id)
     return article_schema.jsonify(article)
 
 
 @app.route('/add', methods=['POST'])
+@cross_origin()
 def add_article():
     title = request.json['title']
     body = request.json['body']
@@ -59,6 +62,7 @@ def add_article():
 
 
 @app.route('/update/<id>/', methods=['PUT'])
+@cross_origin()
 def update_article(id):
     article = Articles.query.get(id)
 
@@ -73,9 +77,16 @@ def update_article(id):
 
 
 @app.route('/delete/<id>/', methods=['DELETE'])
+@cross_origin()
 def article_delete(id):
     article = Articles.query.get(id)
     db.session.delete(article)
     db.session.commit()
 
     return article_schema.jsonify(article)
+
+
+@app.route('/')
+@cross_origin()
+def serve():
+    return send_from_directory(app.static_folder, 'index.html')
