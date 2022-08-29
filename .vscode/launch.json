@@ -11,7 +11,7 @@
             "module": "flask",
             "env": {
                 "FLASK_APP": "D:\\Programming Courses\\Projects\\pyFlask_Article\\backend\\app.py",
-                "FLASK_ENV": "development"
+                "FLASK_ENV": "production"
             },
             "args": [
                 "run",
